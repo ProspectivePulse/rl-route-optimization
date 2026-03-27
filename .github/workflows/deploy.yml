@@ -1,0 +1,46 @@
+name: Build and Deploy
+on:
+    push:
+        branches:
+            - main
+            
+env:
+    PROJECT_ID: rl-route-optimization
+    PROJECT_NUMBER: 625352108635
+    REGION: australia-southeast1
+    
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: 'read'
+            id-token: 'write' # Required for passwordless OIDC authentication
+            
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Authenticate to Google Cloud
+              uses: google-github-actions/auth@v2
+              with:
+                workload_identity_provider: 'project/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+                service_account: 'github-runner@${{ env.PROJECT_ID }}.iam.gserviceaccount.com'
+                
+            - name: Docker Auth
+              run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+            - name: Build and Push Docker Image
+              run: |
+                docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/rl-route-optimization/routing-engine:latest .
+                docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/rl-route-optimization/routing-engine:latest
+                
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name Terraform Init
+              working-directory: ./Terraform
+              run: terraform init
+
+            - name: Terraform Apply
+              working-directory: ./Terraform
+              run: terraform apply -auto-approve  
