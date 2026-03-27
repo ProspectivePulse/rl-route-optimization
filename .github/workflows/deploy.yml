@@ -31,8 +31,8 @@ jobs:
 
             - name: Build and Push Docker Image
               run: |
-                docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/rl-route-optimization/routing-engine:latest .
-                docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/rl-route-optimization/routing-engine:latest
+                docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/rl-routing-repo/routing-engine:latest .
+                docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/rl-routing-repo/routing-engine:latest
                 
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v3
