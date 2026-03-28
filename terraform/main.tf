@@ -24,7 +24,7 @@ resource "google_secret_manager_secret" "api_token" {
 	}
 }
 
-resource "google_secret_manager_secret_version "api_token_version" {
+resource "google_secret_manager_secret_version" "api_token_version" {
 	secret = google_secret_manager_secret.api_token.id
 	secret_data = "secret-production-token"
 }
