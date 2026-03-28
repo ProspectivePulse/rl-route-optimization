@@ -37,7 +37,7 @@ resource "google_cloud_run_v2_service" "default" {
 	template {
 		containers {
 			# Points to the Docker image GitHub Actions will build
-			image = "australia-southeast1-docker.pkg.dev/rl-route-optimization/rl-route-optimization/routing-engine:latest"
+			image = "australia-southeast1-docker.pkg.dev/rl-route-optimization/rl-route-repo/routing-engine:latest"
 			
 			env {
 				name = "API_AUTH_TOKEN"
