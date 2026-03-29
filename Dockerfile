@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 7. Expose the port that Cloud Run expects (8000)
-EXPOSE 8000
+EXPOSE 8080
 
 # 8. The command to start the web server (--reload flag is dropped for production)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
